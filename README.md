@@ -25,9 +25,35 @@
 
 ! LambdaのDeployは BeforeAllowTraffic -> AllowTraffic -> AfterAllowTrafic
 
-## Auroraクラスターのメンテナンスで中断をさいしょうげんにおさえるには
-
+## Auroraクラスターのメンテナンスで中断を最小限におさえるには
 - リーダーインスタンスを追加。
 - 書き込み操作に Aurora クラスターエンドポイントを使用するようにアプリケーション構成を更新します。読み取り操作用に Aurora クラスターリーダーエンドポイントを更新します。
 
 ! クラスター構成にしたらマルチAZに変更はできない。
+
+## EC2とAWｓアカウントのAPIログの両方をクエリする方法
+- AWS CloudTrail を設定、API ログを CloudWatch Logs に配信。
+- Amazon CloudWatch Agent を活用して、EC2 インスタンスから Amazon CloudWatch Logs にログを配信。CloudWatch Logs Insights を使用して、両方のログ セットをクエリする。
+
+## EC2 インスタンスのウェアの脆弱性と意図しないネットワーク露出をプロアクティブに検出するセキュリティ ソリューション
+- Amazon Inspector を設定して、EC2 インスタンスの脆弱性を検出します。
+- Amazon CloudWatch エージェントをインストールして、システムログをキャプチャし、Amazon CloudWatch Logs 経由で記録します。
+- ログイベントを CloudWatch Logs に送信するようにトレイルを設定します。
+
+! SM エージェントは、Amazon EC2 インスタンスの脆弱性をスキャンまたは検出しません。
+
+## ポリシーを更新せずにすべての新しいリソースにアクセス制御を適用する方法
+- タグを使用して属性ベースのアクセス制御を設定。
+- IAMロールの機能に基づいてタグを作成します。新しいリソースが作成されるたびに、これらのタグをリソースに追加して、作成されたリソースにすぐにアクセスできるようにします。
+
+## ALBの背後のEC2をブルー/グリーンデプロイをしたい
+
+- グリーン環境の Auto Scaling グループのローリング再起動を開始して、グリーン環境の EC2 インスタンスに新しいソフトウェアをデプロイします
+- ローリング再起動が完了したら、AWS CLI コマンドを利用して ALB を更新し、トラフィックをグリーン環境のターゲットグループに誘導します。
+
+##  AWS アカウント内の制限のないセキュリティ グループに関するカスタマイズされた通知をリアルタイムで生成する自動監視ソリューションを作成
+
+- 制限付き SSH ルールの AWS Config 評価結果が NON_COMPLIANT に一致する Amazon EventBridge ルールを設定。
+- EventBridge ルールの入力トランスフォーマーを作成します。SNS トピックに通知を発行するように EventBridge ルールを設定。
+
+! COMPLIANT, NON_COMPLIANT, ERROR, NOT_APPLICABLE
