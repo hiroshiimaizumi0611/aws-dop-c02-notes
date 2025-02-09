@@ -24,3 +24,10 @@
 - BeforeAllowTrafficトラフィックが新しいバージョンの Lambda 関数に流れる前に、必要なデータベースの変更をテストして待機するフックを AppSpec ファイルに追加します。
 
 ! LambdaのDeployは BeforeAllowTraffic -> AllowTraffic -> AfterAllowTrafic
+
+## Auroraクラスターのメンテナンスで中断をさいしょうげんにおさえるには
+
+- リーダーインスタンスを追加。
+- 書き込み操作に Aurora クラスターエンドポイントを使用するようにアプリケーション構成を更新します。読み取り操作用に Aurora クラスターリーダーエンドポイントを更新します。
+
+! クラスター構成にしたらマルチAZに変更はできない。
