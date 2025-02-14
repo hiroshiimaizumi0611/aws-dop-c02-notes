@@ -163,3 +163,13 @@
 ## a) Cloudformation カスタムリソースのドリフトを検出する方法 b) スタックのドリフトステータスが CloudFormation コンソールで IN_SYNC と表示され、以下がドリフト検出エラー
 - AWS Configルールは、CloudFormation APIのアクションの可用性に依存しますDetectStackDrift。AWS Configは、スロットリングが発生するとルールをNON_COMPLIANTにデフォルト設定します
 - AWS CloudFormation はカスタムリソースのドリフト検出をサポートしていません
+
+## AWS Glue ジョブの再試行が失敗したときに、Amazon Simple Notification Service (Amazon SNS) 通知を介して通知を受け取りたい
+- AWS Glue の Amazon EventBridge イベントを設定します。AWS Lambda 関数を EventBridge のターゲットとして定義します。
+- Lambda 関数には、イベントを処理し、AWS Glue ジョブ再試行失敗イベントをフィルタリングするロジックがあります。このようなイベントが見つかった場合は、Amazon Simple Notification Service (Amazon SNS) 通知にメッセージを公開します。
+
+! Amazon EventBridge は Lambda 関数なしで直接使用することはできません。
+
+## ダウンタイムなしのBlue/Greenデプロイと2時間のウインドウ、ウインド終了度の自動終了のソリューション
+- AWS CodeDeploy を、Blue/Green デプロイメント構成に設定されたデプロイメントタイプで使用します。
+- 2 時間後に元のフリートを終了するには、Blue/Green デプロイメントのデプロイメント設定を変更します。Original instances値を に設定しTerminate the original instances in the deployment group、待機期間を 2 時間選択します。
