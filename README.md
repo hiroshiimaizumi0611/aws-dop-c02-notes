@@ -173,3 +173,32 @@
 ## ダウンタイムなしのBlue/Greenデプロイと2時間のウインドウ、ウインド終了度の自動終了のソリューション
 - AWS CodeDeploy を、Blue/Green デプロイメント構成に設定されたデプロイメントタイプで使用します。
 - 2 時間後に元のフリートを終了するには、Blue/Green デプロイメントのデプロイメント設定を変更します。Original instances値を に設定しTerminate the original instances in the deployment group、待機期間を 2 時間選択します。
+
+## AWS Access Key ID、、Secret Access Keyおよびデータベースパスワードを参照する環境変数の値がハードコードされていることに気付きました。さらに、ビルドフェーズ中に 1 回限りの構成変更を実行するために、ファイルにはssh、scpAmazon S3 に保存されている SSH 秘密キーを使用して EC2 インスタンスとの間で送受信されるコマンドが含まれています。
+- AWS Systems Manager コマンドを利用して EC2 インスタンスを管理runします。ssh scp
+- CodeBuild プロジェクトロールに必要な権限ポリシーを設定し、buildspec.yaml ファイルから AWS 認証情報を参照する環境変数を削除します。
+- データベースのパスワードを、AWS Systems Manager パラメータストアに SecureString 値として保存し、buildspec 環境で参照します。また、buildspec.yaml ファイルから、データベースのパスワードのハードコードされた値を参照する環境変数を削除します。
+
+! AWS Secrets Manager には SecureString 値はありません。
+
+## CloudFormation スタックは進行中のステータス (CREATE_IN_PROGRESS) から完了ステータス (CREATE_COMPLETE) に移行していません。
+- AWS Lambda 関数を設定して、カスタムリソース作成の応答 (成功または失敗) を、事前に署名された Amazon Simple Storage Service URL に送信します。
+
+! カスタムリソースプロバイダーは JSON 形式のファイルで応答し、署名済み S3 URL にアップロードします。この URL が指定されていない場合、呼び出しテンプレートは Lambda 関数のステータスの更新を取得せず、進行中の状態のままになります。
+
+##  (ALB) と Amazon API Gateway API に対して AWS Web アプリケーションファイアウォール (AWS WAF) Web ACL を構成を自動化する
+- 組織内の AWS アカウントの 1 つを AWS Organizations の Firewall Manager の管理者として指定します。AWS Firewall Manager ポリシーを作成して、新しく作成された ALB と API Gateway API に AWS WAF ウェブ ACL をアタッチします。
+
+! AWS Config はリソースのステータスを追跡できますが、セキュリティインフラストラクチャを集中管理するには AWS Firewall Manager が必要です。
+
+## CloudFront、API Gateway、Lambda 関数で構成されるサーバーレス アプリケーション スタックがあります。この会社は、Lambda 関数の新しいバージョンを作成し、AWS CLI スクリプトを実行してデプロイする現在のデプロイ プロセスを改善
+- サーバーレスアプリケーションモデル (SAM) を使用し、SAM の組み込みトラフィックシフト機能を活用して、CodeDeploy 経由で新しい Lambda バージョンをデプロイし、トラフィック前およびトラフィック後のテスト機能を使用してコードを検証します。CloudWatch アラームがトリガーされた場合はロールバックします。
+
+! CodeDeploy を使用すると、新しい Lambda バージョンを公開するがトラフィックを送信しないデプロイ プロセスを作成できます。次に、PreTraffic テストを実行して、新しい関数が期待どおりに動作することを確認します。テストが成功すると、CodeDeploy はトラフィックを徐々に新しいバージョンの Lambda 関数に移行します。
+! CloudFormation 変更セットを使用するとスタックを実際にデプロイするまで潜在的な障害について知ることができない
+
+## AWS CloudFormation スタックの更新プロセス中スタックが UPDATE_ROLLBACK_FAILED 状態に、完了させるには？
+- スタックの正しい状態に一致するようにリソースを手動で修正する
+- AWS CloudFormationからContinueUpdateRollbackコマンドを実行する
+
+! ドリフト検出は、予想されるテンプレート設定から外れたリソースを識別するのに役立ちますが、UPDATE_ROLLBACK_FAILED 状態の解決には直接関係しません。
