@@ -515,3 +515,26 @@
 - ヘルスサービスで AWS_RISK_CREDENTIALS_EXPOSED をチェックする CloudWatch イベントを作成します。IAM、CloudTrail、SNS への API 呼び出しを発行して、必要な要件を満たす Step Function ワークフローをトリガーします。
 
 ! IAM アクセスキーが GitHub で公開されると、AWS Health は AWS_RISK_CREDENTIALS_EXPOSED イベントを生成します。
+
+## Elastic Beanstalk を使用してアプリをデプロイしています。CodePipeline パイプラインのデプロイ ステージを使用してデプロイされます。技術要件では、HTTP から HTTPS へのリダイレクト ルールを追加して、Elastic Beanstalk に関連付けられた Application Load Balancer の設定を変更することが義務付けられています。
+- .ebextensions/alb.configコードリポジトリにという名前のファイルを作成し、option_settingsキーのルールを指定するブロックを追加しますaws:elbv2:listener:default。コードをプッシュしてCodePipelineを実行します。
+
+## Auto Scaling グループを更新して、すべてのインスタンスが新しく作成された起動構成を参照するようにし、インスタンス タイプをアップグレードします。現在、ASG には 6 つのインスタンスが含まれており、常に少なくとも 4 つのインスタンスが稼働している必要があります。
+- 自動スケーリングローリングアップデート
+
+## EC2 インスタンスが 24 時間以上使用されていない場合に警告する自動化ソリューションを作成したい
+- Trusted Advisor を有効にし、使用率の低い EC2 インスタンスのチェックがオンになっていることを確認します。Trusted Advisor によって作成されたイベントを追跡する CloudWatch イベントを作成し、そのイベントのターゲットとして Lambda 関数を使用します。
+- Lambda 関数は、手動承認手順を含む SSM 自動化ドキュメントをトリガーする必要があります。承認されると、SSM ドキュメントはインスタンスの終了に進みます。
+
+## CloudWatch メトリクスを使用して AWS サービスとアプリケーションのメトリクスをキャプチャしています。規制要件により、これらのメトリクスを視覚化するには、最大 7 年前までさかのぼる必要があります。
+- CloudWatch メトリクス ストリームを作成し、Kinesis Firehose Firehose 配信ストリームに送ります。
+- Firehose を使用してすべてのメトリクス データを S3 に送信し、メトリクスを視覚化するための QuickSight ダッシュボードを作成します。Athena を使用して特定の時間範囲をクエリします。
+
+## CodePipeline を使用して CodeCommit から CodeDeploy でコードをデプロイしたいと考えています。
+- CodeDeploy がデプロイされている S3 バケットへのアクセスを許可する IAM ロールを持つ EC2 インスタンスを作成します。
+- EC2 インスタンスにも CodeDeploy エージェントがインストールされていることを確認します。インスタンスにタグを付けて、デプロイ グループの一部にします。
+
+## DevOps エンジニアとして、これをエンド カスタマー向けの安全な API として公開する必要があります。Web サイトは同時に 5000 件のリクエストに対応できる必要があります。これをできるだけ簡単に実装するにはどうすればよいでしょうか。
+- Step Functions で予約ワークフローを作成します。Step Functions とのサービス統合を使用して API Gateway ステージを作成します。Cognito を使用して API を保護します。
+
+! Step Functions を使用して支払いワークフローを実装する必要があります。この統合が必要な主な理由は、AWS Lambda の最大同時実行数が 1000 であるのに対し、API Gateway の最大同時実行数は 10000 であるためです。
