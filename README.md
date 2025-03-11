@@ -604,3 +604,21 @@
 - アカウント B で、クロスアカウント IAM ロールを作成します。アカウント A で、AssumeRoleアカウント A の CodePipeline サービスロールに権限を追加して、アカウント B でクロスアカウントロールを引き受けられるようにします。
 - アカウント B で、スタックによってデプロイされたサービスに必要な権限を含む CloudFormation スタックのサービスロールを作成します。アカウント A で、アカウント B に関連付けられたリソースを含めるように CodePipeline 構成を更新します。
 - アカウントAで、アカウントAのCodePipelineサービスロールとアカウントBに使用権限を付与するカスタマー管理のAWS KMSキーを作成します。また、アカウントBにバケットへのアクセスを許可するバケットポリシーを持つAmazon Simple Storage Service (Amazon S3)バケットを作成します。
+
+## 生成されたすべてのイベントのログを Amazon CloudWatch Logs に送信するように設定されています。リソースへの不正アクセスの可能性がある。ファイアウォール アプライアンスが重大度の重大なイベントを生成した場合にセキュリティ チームにアラートを設定
+- ログイベントから「Critical」という用語に一致するようにログデータをフィルタリングして、Amazon CloudWatch にメトリックフィルターを作成します。検出結果のカスタムメトリックを公開し、このカスタムメトリックに CloudWatch アラームを設定して、Amazon Simple Notification Service (Amazon SNS) トピックに通知を公開します。セキュリティチームのメールアドレスを SNS トピックに登録します。
+
+## さまざまな地域にわたるグローバル ユーザー ベースに高い信頼性と低レイテンシーを提供するクイック スタート ソリューションを探しています。
+- Amazon Route 53 を設定して、ヨーロッパおよびアジア太平洋地域の API Gateway API を参照します。
+- Route 53 でレイテンシーベースのルーティングとヘルスチェックを使用します。それぞれのリージョンの AWS Lambda 関数にリクエストを転送するように API を設定します。DynamoDB グローバル テーブルのデータを取得および更新するように Lambda 関数を設定します。
+
+## スタックが UPDATE_ROLLBACK_FAILED 状態になっていることを知りました。スタック ロールバックを正常に完了するには
+- AWS CloudFormationからContinueUpdateRollbackコマンドを実行する
+- スタックの正しい状態に一致するようにリソースを手動で修正する
+
+## AWS CodeBuild プロジェクトの buildspec.yaml ファイルを確認する任務を負っています。調査の結果、ファイルには、AWS Access Key ID、Secret Access Keyおよびデータベースパスワードを参照する環境変数の値がハードコードされていることに気付きました。さらに、ビルドフェーズ中に 1 回限りの構成変更を実行するために、ファイルには、Amazon S3 に保存されている SSH 秘密キーを使用して EC2 インスタンスとの間で送受信されるsshコマンドが含まれています。scp
+- データベースのパスワードを、AWS Systems Manager パラメータストアに SecureString 値として保存し、buildspec 環境で参照します。また、buildspec.yaml ファイルから、データベースのパスワードのハードコードされた値を参照する環境変数を削除します。
+- Amazon S3 に保存されている SSH 秘密鍵を介して EC2 インスタンスへのコマンドrunを使用するのではなく、AWS Systems Managerコマンドを利用して EC2 インスタンスを管理します。sshscp
+- CodeBuild プロジェクトロールに必要な権限ポリシーを設定し、buildspec.yaml ファイルから AWS 認証情報を参照する環境変数を削除します。
+
+!AWS Secrets Manager には SecureString 値はありません。
