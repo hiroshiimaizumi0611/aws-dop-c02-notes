@@ -622,3 +622,7 @@
 - CodeBuild プロジェクトロールに必要な権限ポリシーを設定し、buildspec.yaml ファイルから AWS 認証情報を参照する環境変数を削除します。
 
 !AWS Secrets Manager には SecureString 値はありません。
+
+## a) Cloudformation カスタムリソースのドリフトを検出する方法 b) スタックのドリフトステータスが CloudFormation コンソールで IN_SYNC と表示され、以下がドリフト検出エラーです - 「AWS CloudFormation はドリフトを検出できませんでしたが、デフォルトで NON_COMPLIANT になります。
+- AWS CloudFormation はカスタムリソースのドリフト検出をサポートしていません
+- AWS Configルールは、CloudFormation APIのアクションの可用性に依存しますDetectStackDrift。AWS Configは、スロットリングが発生するとルールをNON_COMPLIANTにデフォルト設定します。
