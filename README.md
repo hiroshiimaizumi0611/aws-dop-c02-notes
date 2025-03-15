@@ -644,4 +644,11 @@
 ## Beanstalk に更新をデプロイすると、新しいバージョンを実行しているすべての EC2 インスタンスが RDS データベースで移行を実行しようとしたため、移行が失敗しました。
 - .ebextensions/db-migration.configコードリポジトリにファイルを作成し、container_commandsブロックを設定します。そこに移行コマンドを設定し、leader_only: true属性を使用します。
 
-## 
+## CloudWatch メトリクスを使用して AWS サービスとアプリケーションのメトリクスをキャプチャしています。規制要件により、これらのメトリクスを視覚化するには、最大 7 年前までさかのぼる必要があります。
+- CloudWatch メトリクス ストリームを作成し、Kinesis Firehose Firehose 配信ストリームに送ります。Firehose を使用してすべてのメトリクス データを S3 に送信し、メトリクスを視覚化するための QuickSight ダッシュボードを作成します。Athena を使用して特定の時間範囲をクエリします。
+
+! S3ベースのデータは QuickSight と簡単に統合できますが、CloudWatch ダッシュボードは CloudWatch メトリックのみを消費でき、S3 のデータ/メトリックを消費することはできません。
+
+## CloudFormation で管理されAWS::RDS::DBInstance、Multi-AZ を使用してセットアップされている MySQL データベースのメジャー バージョンをアップグレードしたいと考えています。
+- CloudFormation テンプレートで RDS リードレプリカを作成しSourceDBInstanceIdentifier、作成されるのを待ちます。その後、RDS リードレプリカをEngineVersion次のメジャーバージョンにアップグレードします。次に、リードレプリカを昇格して、新しいマスターデータベースとして使用します。
+
