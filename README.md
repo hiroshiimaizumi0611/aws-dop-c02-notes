@@ -682,3 +682,9 @@
 - SSMを使用して、カスタムパッチベースラインを実装します。メンテナンスウィンドウを定義し、実行コマンドRunPatchBaselineを含めます。メンテナンスウィンドウを毎週繰り返してスケジュールします。
 
 ! SSM RunCommand を使用すると、必要な作業を実行できる可能性がありますが、SSM の Patch Manager を使用すると、これを実現しやすくなります。
+
+## CloudFormation テンプレートをデプロイしようとしていますが、チームは というエラーを受けていますInsufficientCapabilitiesException。
+- Deploy CloudFormationステージアクションのCodePipeline設定でIAM機能を有効にする
+
+##  CloudFormation と Beanstalk を使用して 100 を超えるアプリケーションをデプロイしており、EC2 インスタンスに使用される新しい AMI が毎週更新されるようにしたいと考えています。すべての CloudFormation テンプレートに標準化や命名規則はありません。
+- Golden AMI ID を SSM パラメータストアパラメータに保存します。SSM パラメータストアを指し、Elastic Beanstalk 環境の設定に渡される CloudFormation パラメータを作成します。毎週トリガーされ、Lambda 関数を起動する CloudWatch イベントルールを作成します。この Lambda 関数は、UpdateStackAPIを使用してすべての CloudFormation テンプレートの更新をトリガーする必要があります。
