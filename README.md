@@ -825,3 +825,6 @@
 ## アプリ固有のパイプラインを容易に作成するため、自社のパッケージと依存するリポジトリをArtifactで利用したい。CICDを更新して、Artifactを構成する手順。
 - リポジトリごとに外部接続で構成されたArtifact作成。依存リポジトリをアップストリームに。
 - IAMRolesAnywhereトラストアンカー作成。Artifaftアクションを許可、トラストアンカー上で信頼関係を持つロール作成。オンプレのパイプラインを更新してロールを引き受け、パッケージを公開します。
+
+## LowUtilizationAmazonEc2Instancesチェック結果の修復を自動化したい。チェックに失敗したインスタンスは停止、14日以内に再起動されない場合は終了。
+- Lambdaトリガー,EventBridgeでLowUtilizationAmazonEc2Instancesに一致するルール作成。日付をタグ付け。　14日間シャットダウンされているインスタンスを終了する、EventBridgeとLambdaを作成。
