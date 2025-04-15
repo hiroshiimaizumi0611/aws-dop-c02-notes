@@ -828,3 +828,8 @@
 
 ## LowUtilizationAmazonEc2Instancesチェック結果の修復を自動化したい。チェックに失敗したインスタンスは停止、14日以内に再起動されない場合は終了。
 - Lambdaトリガー,EventBridgeでLowUtilizationAmazonEc2Instancesに一致するルール作成。日付をタグ付け。　14日間シャットダウンされているインスタンスを終了する、EventBridgeとLambdaを作成。
+
+## CLoudFormation使用。開発者IAMロールはAdmin権限がある。CloudFormation用のIamdロール作る。これはCloudFormationのみが使用できるようにしたい。
+- cloudformation用ロールにポリシー追加してすべてのリソースでCloudFormationを許可。iam:PassedToServiceが等しい場合にiam:PassROeを許可するポリシーを追加。
+- cloudformation用ロールの信頼ポリシーを更新してcloudfromation.amazonaws.com AWSプリンシパルがiasm:AssumeROleを実行できるようにする。
+- Adminポリシー削除。開発者ロールにReadOnlyつける。デプロイする時はCloudformation用ロールをさーびロールとして使用するように指示する。
