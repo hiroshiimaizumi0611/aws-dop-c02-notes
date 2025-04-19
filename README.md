@@ -833,3 +833,7 @@
 - cloudformation用ロールにポリシー追加してすべてのリソースでCloudFormationを許可。iam:PassedToServiceが等しい場合にiam:PassROeを許可するポリシーを追加。
 - cloudformation用ロールの信頼ポリシーを更新してcloudfromation.amazonaws.com AWSプリンシパルがiasm:AssumeROleを実行できるようにする。
 - Adminポリシー削除。開発者ロールにReadOnlyつける。デプロイする時はCloudformation用ロールをさーびロールとして使用するように指示する。
+
+## EC2コンソールを確認すると、システムのステータスチェックにimpairedと表示されています。
+- インスタンスを停止してから起動し、正常なホストにインスタンスを再デプロイできるように、impairedのシステムのステータスを修正します。
+- 
